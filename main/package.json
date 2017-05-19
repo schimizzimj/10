@@ -1,0 +1,27 @@
+{
+  "name": "NodejsStarterApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "cfenv": "1.0.x",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "fs": "0.0.1-security",
+    "mongodb": "^2.1.19",
+    "nodemailer": "^2.4.1",
+    "python-shell": "^0.4.0",
+    "request": "^2.81.0",
+    "rss-to-json": "^1.0.2"
+  },
+  "repository": {},
+  "engines": {
+    "node": "4.x"
+  },
+  "devDependencies": {
+    "standard": "^7.1.2"
+  }
+}

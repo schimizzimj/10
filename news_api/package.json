@@ -1,0 +1,20 @@
+{
+  "name": "10",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node main.js"
+  },
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "fs": "0.0.1-security",
+    "jquery": "^3.2.1",
+    "line-by-line": "^0.1.5",
+    "request": "^2.74.0",
+    "rss-to-json": "^1.0.2",
+    "watson-developer-cloud": "^2.31.1"
+  }
+}
