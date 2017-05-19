@@ -11,9 +11,15 @@ data.controller("stock", function($scope, $http) {
             var chart_dates = [];
             var sentiment = [];
             var price = [];
-            for (var i = 0; i < data.all.length; i++) {
-                data.all[i].created = data.all[i].created * 1000;
-                chart_dates.push(new Date(data.all[i].created));
+            var d2 = data.all;
+
+            d2.sort(function(a, b) {
+                return a.created - b.created;
+            });
+
+            for (var i = 0; i < d2.length; i++) {
+                d2[i].created = d2[i].created * 1000;
+                chart_dates.push(new Date(d2[i].created));
                 sentiment.push(data.all[i].indNum);
                 price.push(data.all[i].price);
             }
