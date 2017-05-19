@@ -41,7 +41,7 @@ app.get('/stock/*', function(req, res) {
             res.send('Error: Invalid Stock Ticker');
         } else {
             console.log('getArticles(' + req.url.substring(7).toUpperCase() + ', ' + message.trim() + ')');
-            getArticles(req.url.substring(7).toUpperCase(), message.trim(), function(ticker, company, scores, links) {
+            getArticles(req.url.substring(7).toUpperCase(), message.trim(), function(ticker, company, scores) {
                 var positive = 0;
                 var negative = 0;
                 var sentiment = "";
@@ -52,12 +52,14 @@ app.get('/stock/*', function(req, res) {
                         negative++;
                     }
                 }
+                var num = (positive - negative) / (positive + negative);
+                num = num.toFixed(2);
                 if (positive > negative) {
-                    sentiment = "Positive (+" + (positive - negative) + ")";
+                    sentiment = "Positive (" + num + ")";
                 } else if (positive < negative) {
-                    sentiment = "Negative (-" + (negative - positive) + ")";
+                    sentiment = "Negative (" + num + ")";
                 } else {
-                    sentiment = "Neutral (+/-0)";
+                    sentiment = "Neutral (0)";
                 }
                 res.send({
                     'company': message.trim(),
@@ -65,12 +67,21 @@ app.get('/stock/*', function(req, res) {
                     'sentiment': sentiment,
                     'positive': positive,
                     'negative': negative,
-                    'links': links
+                    'all': scores
                 });
             });
         }
     });
 });
+
+function getPrice(ticker, date, callback) {
+    var pyshell = new PythonShell('prices.py', {
+        args: [ticker, date]
+    });
+    pyshell.on('message', function(message) {
+        callback(message);
+    });
+}
 
 app.listen(appEnv.port, '0.0.0.0', function() {
     console.log("server starting on " + appEnv.url);
@@ -84,6 +95,7 @@ function getArticles(ticker, company, finalCB) {
         //console.log(rss);
         var items = rss.items;
         for (var i = 0; i < items.length; i++) {
+            items[i].created = items[i].created / 1000;
             links.push(items[i]);
         }
         scoreSentiment(ticker, company, links, 0, [], finalCB);
@@ -93,13 +105,17 @@ function getArticles(ticker, company, finalCB) {
 function scoreSentiment(ticker, company, links, count, scores, finalCB) {
     if (count < links.length) {
         checkUrl(links[count], function(data) {
-            console.log(data);
-            scores.push(data);
-            count++;
-            scoreSentiment(ticker, company, links, count, scores, finalCB);
+            console.log('getPrice(' + ticker + ', ' + links[count].created + ')');
+            getPrice(ticker, links[count].created, function(price) {
+                data.price = price;
+                console.log(data);
+                scores.push(data);
+                count++;
+                scoreSentiment(ticker, company, links, count, scores, finalCB);
+            });
         });
     } else {
-        finalCB(ticker, company, scores, links);
+        finalCB(ticker, company, scores);
     }
 }
 
@@ -115,6 +131,7 @@ function checkUrl(link, callback) {
                 'title': link.title,
                 'description': link.description,
                 'created': link.created,
+                'price': link.price,
                 'pos': 0,
                 'neg': 0,
                 'total': 0,
@@ -158,6 +175,7 @@ function checkUrl(link, callback) {
                     'title': link.title,
                     'description': link.description,
                     'created': link.created,
+                    'price': link.price,
                     'pos': pos,
                     'neg': neg,
                     'total': total,
@@ -169,6 +187,7 @@ function checkUrl(link, callback) {
                     'title': link.title,
                     'description': link.description,
                     'created': link.created,
+                    'price': link.price,
                     'pos': 0,
                     'neg': 0,
                     'total': 0,
