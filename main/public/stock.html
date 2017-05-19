@@ -17,24 +17,57 @@
     <script src="/js/main.js"></script>
 </head>
 
-<body ng-app="stock_data" ng-controller="stock">
+<body ng-app="stock_data" ng-controller="stock" style="padding-top:0">
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h1 id="loading">Data Loading...</h1>
+                <h1 id="invalid" hidden="true">Invalid Stock Ticker (<span ng-bind="ticker"></span>)</h1>
                 <span id="loaded" hidden="true">
                   <h1><span ng-bind="data.company"></span> (<span ng-bind="data.ticker"></span>)</h1>
-                  <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
+                <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
                 </span>
             </div>
         </div>
         <br>
-        <div class="row">
-            <div class="col-md-6">
+        <br>
+        <div class="row" id="loaded2" hidden="true">
+            <div class="col-md-10">
                 <div class="col-md-12" style="padding-left:0">
-                    <div class="col-md-5" style="padding-left:0">
-
+                    <div class="col-md-12" style="padding-left:0">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th width="100%">Article</th>
+                                    <th>Date</th>
+                                    <th>Sentiment</th>
+                                    <th>Stock Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="article in data.all">
+                                    <th scope="row">{{$index + 1}}</th>
+                                    <td>
+                                        <b><a href="article.url"><span ng-bind="article.title"></span></a></b>
+                                        <p>
+                                            <span ng-bind="article.description"></span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="article.created | date:'M/dd/yyyy, h:mm a'"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-bind="article.tag"></span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="article.price == 'False'">n/a</span>
+                                        <span ng-show="article.price != 'False'">$<span ng-bind="article.price"></span></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
