@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "angular-chart.js": "^1.1.1",
     "body-parser": "^1.15.1",
     "cfenv": "1.0.x",
     "ejs": "^2.4.1",
