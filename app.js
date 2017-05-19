@@ -182,7 +182,7 @@ function checkUrl(link, callback) {
                 //Adjust for data skewed postivie
                 if (total >= 2) {
                     tag = "Positive";
-                } else if (total < 2) {
+                } else if (total < -2) {
                     tag = "Negative";
                 } else {
                     tag = "Neutral";
