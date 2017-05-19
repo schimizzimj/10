@@ -34,14 +34,14 @@ app.post('/redirect', function(req, res) {
 
 app.get('/stock/*', function(req, res) {
     var pyshell = new PythonShell('financials.py', {
-        args: [req.url.substring(7)]
+        args: [req.url.substring(7).toUpperCase()]
     });
     pyshell.on('message', function(message) {
         if (message == 'False') {
             res.send('Error: Invalid Stock Ticker');
         } else {
-            console.log('getArticles(' + req.url.substring(7) + ', ' + message.trim() + ')');
-            getArticles(req.url.substring(7), message.trim(), function(ticker, company, scores, links) {
+            console.log('getArticles(' + req.url.substring(7).toUpperCase() + ', ' + message.trim() + ')');
+            getArticles(req.url.substring(7).toUpperCase(), message.trim(), function(ticker, company, scores, links) {
                 var positive = 0;
                 var negative = 0;
                 var sentiment = "";

@@ -6,6 +6,7 @@ data.controller("stock", function($scope, $http) {
     $http.get('/stock/' + stock).success(function(data, status, headers, config) {
         $('#loading').hide();
         $scope.data = data;
+        $('#loaded').show();
         console.log(data);
     });
 

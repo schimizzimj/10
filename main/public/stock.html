@@ -23,8 +23,10 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 id="loading">Data Loading...</h1>
-                <h1><span ng-bind="data.company"></span> (<span ng-bind="data.ticker"></span>)</h1>
-                <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
+                <span id="loaded" hidden="true">
+                  <h1><span ng-bind="data.company"></span> (<span ng-bind="data.ticker"></span>)</h1>
+                  <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
+                </span>
             </div>
         </div>
         <br>
