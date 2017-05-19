@@ -3,6 +3,7 @@
 import requests
 import re
 import sys
+import datetime
 
 REGEX = '<span data-reactid="62">.*<\/span>'
 
@@ -14,9 +15,16 @@ def fetch(url):
 
 args = sys.argv[1:]
 symbol = args[0]
-time = args[1]
+day_begin = int(args[1])
 
-data = fetch("https://finance.yahoo.com/quote/" + symbol + "/history?period1=" + time + "&period2=" + time + "&interval=1d&filter=history&frequency=1d")
+day_begin = day_begin - (day_begin % (24 * 60 * 60)) + (4 * 60 * 60)
+day_date = datetime.datetime.fromtimestamp(day_begin)
+day_of_week = datetime.date.weekday(day_date)
+if day_of_week is 5:
+	day_begin -= (60 * 60 * 24) # convert Saturday to Friday
+elif day_of_week is 6:
+	day_begin -= (2 * 60 * 60 *24) # convert Sunday to Friday
+data = fetch("https://finance.yahoo.com/quote/" + symbol + "/history?period1=" + str(day_begin) + "&period2=" + str(day_begin) + "&interval=1d&filter=history&frequency=1d")
 data = re.search(REGEX, data)
 if data:
 	data = data.group(0)
@@ -24,4 +32,4 @@ if data:
 	closing = data.split('>')[1]
 	print closing
 else:
-	print False
+	day_begin
