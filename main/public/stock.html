@@ -11,9 +11,10 @@
 
     <title>Team IO</title>
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
+    <script src="/js/Chart.min.js"></script>
+    <script src="/js/angular-chart.js"></script>
     <script src="/js/main.js"></script>
 </head>
 
@@ -24,7 +25,7 @@
             <div class="col-md-12">
                 <h1 id="loading">Data Loading...</h1>
                 <h1 id="invalid" hidden="true">Invalid Stock Ticker (<span ng-bind="ticker"></span>)</h1>
-                <span id="loaded" hidden="true">
+                <span class="loaded" hidden="true">
                   <h1><span ng-bind="data.company"></span> (<span ng-bind="data.ticker"></span>)</h1>
                 <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
                 </span>
@@ -32,8 +33,8 @@
         </div>
         <br>
         <br>
-        <div class="row" id="loaded2" hidden="true">
-            <div class="col-md-10">
+        <div class="row loaded" hidden="true">
+            <div class="col-md-12">
                 <div class="col-md-12" style="padding-left:0">
                     <div class="col-md-12" style="padding-left:0">
                         <table class="table table-bordered">
@@ -47,7 +48,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="article in data.all">
+                                <tr ng-repeat="article in data.all | orderBy: '-created'">
                                     <th scope="row">{{$index + 1}}</th>
                                     <td>
                                         <b><a href="article.url"><span ng-bind="article.title"></span></a></b>
@@ -59,15 +60,25 @@
                                         <span ng-bind="article.created | date:'M/dd/yyyy, h:mm a'"></span>
                                     </td>
                                     <td>
-                                        <span ng-bind="article.tag"></span>
+                                        <span ng-bind="article.tag"></span> (<span ng-bind="article.indNum"></span>)
                                     </td>
                                     <td>
-                                        <span ng-show="article.price == 'False'">n/a</span>
-                                        <span ng-show="article.price != 'False'">$<span ng-bind="article.price"></span></span>
+                                        <span ng-show="article.price == 0">n/a</span>
+                                        <span ng-show="article.price != 0">$<span ng-bind="article.price"></span></span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row loaded" hidden="true">
+            <div class="col-md-12">
+                <div class="col-md-12" style="padding-left:0">
+                    <div class="col-md-12" style="padding-left:0">
+                        <canvas id="line" class="chart chart-line" chart-data="cData" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
+</canvas>
                     </div>
                 </div>
             </div>
@@ -79,8 +90,10 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="js/bootstrap.js"></script>
+
+
 
 </body>
 
