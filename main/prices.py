@@ -31,5 +31,3 @@ if data:
 	data = re.sub("</span>.*", "", data)
 	closing = data.split('>')[1]
 	print closing
-else:
-	day_begin
