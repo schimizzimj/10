@@ -1,2 +1,1 @@
-# Node.js Example Application
-Used for testing CI-CD app on IBM
+# Team IO, Project 2
