@@ -19,34 +19,33 @@ data.controller("stock", function($scope, $http) {
             }
             $scope.labels = chart_dates;
             $scope.series = ['Series A', 'Series B'];
-            $scope.cData = [sentiment, price];
-            /*
+            $scope.cData = [price, sentiment];
+            $scope.datasetOverride = [
+                {
+                    yAxisID: 'y-axis-1'
+                }, {
+                    yAxisID: 'y-axis-2'
+                }
+            ];
             $scope.options = {
                 scales: {
                     yAxes: [
                         {
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Estado'
-                            },
+                            id: 'y-axis-1',
+                            type: 'linear',
+                            position: 'left'
+                        }, {
+                            id: 'y-axis-2',
+                            type: 'linear',
+                            position: 'right',
                             ticks: {
-                                min: 1,
-                                max: 3,
-                                stepSize: .1,
-                            }
-                        }
-                    ],
-                    xAxes: [
-                        {
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Hora'
+                                max: 1,
+                                min: -1
                             }
                         }
                     ]
                 }
             };
-            */
 
             $('.loaded').show();
 
