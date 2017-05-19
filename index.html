@@ -34,7 +34,7 @@
 					<i class="mdi mdi-menu"></i>
 				</button>
 				<nav id="nav-main" class="nav-h nav-side">
-					<a class="btn btn-header" href="./">Home</a>
+					<a class="btn btn-header" href="index.html">Home</a>
 					<a class="btn btn-header" href="./">Marcus</a>
 					<a class="btn btn-header" href="./">Daniel</a>
 					<a class="btn btn-header" href="./">Kexian</a>
@@ -86,26 +86,21 @@
 
 <script type="text/javascript">
 $(function() {
-
   $('input[name="datefilter"]').daterangepicker({
       autoUpdateInput: false,
       locale: {
           cancelLabel: 'Clear'
       }
   });
-
   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
   });
-
   $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
       $(this).val('');
   });
-
 });
 </script>
 <script type="text/javascript" src="js/mySearch.js">
-
 </script>
 <!-- <script type="text/javascript">document.write('<script src="' +'http://' + (location.hostname || 'localhost') + ':35729/livereload.js?snipver=1" type="text/javascript"><\/script>')</script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script> -->
