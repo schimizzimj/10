@@ -24,24 +24,24 @@ app.set('views', __dirname + '/public');
 var routeArray = ['/', '/home', '/index', '/index.html'];
 app.get(routeArray, function(req, res) {});
 
-app.get('/stock/*', function(req, res) {
+app.get('/stock_data/*', function(req, res) {
     res.render('stock.html');
 });
 
 app.post('/redirect', function(req, res) {
-    res.redirect('/stock/' + req.body.ticker);
+    res.redirect('/stock_data/' + req.body.ticker);
 });
 
-app.get('/*', function(req, res) {
+app.get('/stock/*', function(req, res) {
     var pyshell = new PythonShell('financials.py', {
-        args: [req.url.substring(1)]
+        args: [req.url.substring(7)]
     });
     pyshell.on('message', function(message) {
         if (message == 'False') {
             res.send('Error: Invalid Stock Ticker');
         } else {
-            console.log('getArticles(' + req.url.substring(1) + ', ' + message.trim() + ')');
-            getArticles(req.url.substring(1), message.trim(), function(ticker, company, scores) {
+            console.log('getArticles(' + req.url.substring(7) + ', ' + message.trim() + ')');
+            getArticles(req.url.substring(7), message.trim(), function(ticker, company, scores, links) {
                 var positive = 0;
                 var negative = 0;
                 var sentiment = "";
@@ -60,10 +60,12 @@ app.get('/*', function(req, res) {
                     sentiment = "Neutral (+/-0)";
                 }
                 res.send({
-                    'Company': message.trim() + ' (' + ticker + ')',
-                    'Sentiment': sentiment,
-                    'Num Positive': positive,
-                    'Num Negative': negative
+                    'company': message.trim(),
+                    'ticker': ticker,
+                    'sentiment': sentiment,
+                    'positive': positive,
+                    'negative': negative,
+                    'links': links
                 });
             });
         }
@@ -97,7 +99,7 @@ function scoreSentiment(ticker, company, links, count, scores, finalCB) {
             scoreSentiment(ticker, company, links, count, scores, finalCB);
         });
     } else {
-        finalCB(ticker, company, scores);
+        finalCB(ticker, company, scores, links);
     }
 }
 

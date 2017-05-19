@@ -1,8 +1,12 @@
 var data = angular.module("stock_data", []);
 
 data.controller("stock", function($scope, $http) {
-    console.log(this.href.substr(this.href.lastIndexOf('/') + 1);
-    $http.get('/' + this.href.substr(this.href.lastIndexOf('/') + 1)).success(function(data, status, headers, config) {
+    var url = window.location.href.split('/');
+    var stock = url.pop();
+    $http.get('/stock/' + stock).success(function(data, status, headers, config) {
+        $('#loading').hide();
         $scope.data = data;
         console.log(data);
-    });});
+    });
+
+});

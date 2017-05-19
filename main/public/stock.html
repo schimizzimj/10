@@ -10,11 +10,11 @@
     <link rel="icon" href="images/favicon.ico">
 
     <title>Team IO</title>
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </head>
 
 <body ng-app="stock_data" ng-controller="stock">
@@ -22,8 +22,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Team I/O</h1>
-                <h3 style="font-weight:300">tbd</h3>
+                <h1 id="loading">Data Loading...</h1>
+                <h1><span ng-bind="data.company"></span> (<span ng-bind="data.ticker"></span>)</h1>
+                <h3 style="font-weight:300">Current Sentiment: <span ng-bind="data.sentiment"></span></h3>
             </div>
         </div>
         <br>
