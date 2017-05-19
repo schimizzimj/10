@@ -31,7 +31,7 @@ cleaned_data = re.search(REGEX, data)
 if cleaned_data:
 	cleaned_data = cleaned_data.group(0)
 	cleaned_data = re.sub("</span>.*", "", cleaned_data)
-	closing = data.split('>')[1]
+	closing = cleaned_data.split('>')[1]
 	print closing
 else:
 	# get current price if day entered is today (no closing yet)
